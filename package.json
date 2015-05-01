@@ -1,0 +1,18 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "description": "Learning NodeJS",
+  "main": "web.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.12.3",
+    "express-handlebars": "^2.0.1",
+    "express3-handlebars": "^0.5.2",
+    "express4-handlebars": "^0.2.0",
+    "nchart": "^1.0.1"
+  }
+}
