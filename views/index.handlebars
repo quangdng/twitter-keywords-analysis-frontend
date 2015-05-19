@@ -1,7 +1,15 @@
-<div style="margin:auto 0;">
+<script>
+    $( document ).ready(function() {
+        $("#keyword").focus();
+    });
+</script>
+<div id="loading">
+    <img src="/img/logo.png">
+<div id="input_key">
     <form role="form" action="/home" method="POST">
         <div class="form-group">
-            <input class="form-control" placeholder="Enter your keywords" id="keyword" name="keyword">
+            <input class="form-control input-lg" placeholder="Enter your keywords" id="keyword" name="keyword" required>
         </div>
     </form>
+</div>
 </div>

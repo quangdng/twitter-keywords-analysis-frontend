@@ -1,14 +1,57 @@
 <script src="/lib/home_map.js"></script>
+<div id="loading">
+<div id="fountainTextG">
+    <div id="fountainTextG_1" class="fountainTextG">
+        A</div>
+    <div id="fountainTextG_2" class="fountainTextG">
+        n</div>
+    <div id="fountainTextG_3" class="fountainTextG">
+        a</div>
+    <div id="fountainTextG_4" class="fountainTextG">
+        l</div>
+    <div id="fountainTextG_5" class="fountainTextG">
+        y</div>
+    <div id="fountainTextG_6" class="fountainTextG">
+        s</div>
+    <div id="fountainTextG_7" class="fountainTextG">
+        i</div>
+    <div id="fountainTextG_8" class="fountainTextG">
+        n</div>
+    <div id="fountainTextG_9" class="fountainTextG">
+        g</div>
+    <div id="fountainTextG_10" class="fountainTextG">
+        .</div>
+    <div id="fountainTextG_11" class="fountainTextG">
+        .</div>
+    <div id="fountainTextG_12" class="fountainTextG">
+        .</div>
+</div>
+</div>
 <div id='container'>
 <div id='map-canvas'></div>
 <div id='result'>
-    <h3 id="region_title">Analysis of</h3>
-    <h3 id="keyword"><b>{{keyword}}</b></h3>
+    <h3 id="region_title">Sentiment Analysis of</h3>
+    <h3 id="key">{{keyword}}</h3>
     <h4 id="region">in Singapore</h4>
     <div id="canvas-holder" >
         <canvas id="chart-area"/>
     </div>
     <div id="js-legend" class="chart-legend"></div>
+    <div id="canvas-holder" >
+        <canvas id="bar-area"/>
+    </div>
+        <div id="canvas-holder" >
+        <canvas id="frequency-area"/>
+    </div>
+    <div id="bar-legend" class="chart-legend"></div>
+    <div id="map-legend" class="chart-legend">
+        <ul class="pie-legend">
+            <li><span style="background-color:#B2DC57"></span>Positive Biased</li>
+            <li><span style="background-color:#70BBF5"></span>Neutral Biased</li>
+            <li><span style="background-color:#D33F26"></span>Negative Biased</li>
+        </ul>
+    </div>
+
 </div>
 
 </div>

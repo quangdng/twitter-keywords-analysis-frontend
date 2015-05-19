@@ -4,7 +4,7 @@ google.maps.Polygon.prototype.my_getBounds=function(){
 	return bounds
 };
 
-var ang_moi_kio = [
+var ang_mo_kio = [
 	new google.maps.LatLng(1.394370, 103.818800),
 	new google.maps.LatLng(1.390630, 103.818180),
 	new google.maps.LatLng(1.389430, 103.817750),
@@ -2747,17 +2747,17 @@ var yishun = [
 ];
 
 var suburbs = {
-	'Ang Mo Kio': ang_moi_kio,
+	'Ang Mo Kio':ang_mo_kio,
 	'Bedok':bedok,
 	'Bishan':bishan,
 	'Boon Lay':boon_lay,
 	'Bukit Batok':bukit_batok,
 	'Bukit Mera':bukit_mera,
-	'Bukit Panjan':bukit_panjan,
+	'Bukit Panjang':bukit_panjan,
 	'Bukit Timah':bukit_timah,
 	'Central Water Catchment':central_water_catchment,
-	'Changqi':chang_gi,
-	'Changqi Bay':changi_bay,
+	'Changi':chang_gi,
+	'Changi Bay':changi_bay,
 	'Choa Chu Kang':choa_chu_kang,
 	'Clementi':clementi,
 	'Downtown Core':downtown_core,
@@ -2765,7 +2765,7 @@ var suburbs = {
 	'Hougang':hougang,
 	'Jurong East':jurong_east,
 	'Jurong West':jurong_west,
-	'Kallawang':kallawang,
+	'Kallang':kallawang,
 	'Lim Chu Kang':lim_chu_kang,
 	'Mandai':mandai,
 	'Marina East':marina_east,
@@ -2780,7 +2780,7 @@ var suburbs = {
 	'Pasir Ris':pasir_ris,
 	'Paya Lebar':paya_lebar,
 	'Pioneer':pioneer,
-	'Pungol':pungool,
+	'Punggol':pungool,
 	'Queenstown':queenstown,
 	'River Valley':river_valley,
 	'Rochor':rochor,
@@ -2867,7 +2867,10 @@ var result = {
 	'Yishun':yishun
 };
 
-$( document ).ready(function() {
+var results = {};
+var singapore = {};
+
+function loadMap() {
 	var mapOptions = {
 		center: new google.maps.LatLng(1.3667,103.83),
 		zoom: 12,
@@ -2893,83 +2896,277 @@ $( document ).ready(function() {
 		}
 	]);
 
-	for (path in suburbs) {
-		var p = new google.maps.Polygon({
-			paths: suburbs[path],
-			strokeColor: 'gray',
-			strokeOpacity: 1,
-			strokeWeight: 2,
-			fillColor: '#'+Math.floor(Math.random()*16777215).toString(16),
-			fillOpacity: 0.35,
-			indexID: path
-		});
-
-		p.setMap(map);
-
-		var mapLabel = new MapLabel({
-			text: p.indexID,
-			position: p.my_getBounds().getCenter(),
-			map: map,
-			fontSize: 10,
-			align: 'center'
-		});
-		p.label = mapLabel;
-		p.color = p.fillColor
-
-		mapLabel.set('position', p.my_getBounds().getCenter());
-
-		google.maps.event.addListener(p, 'click', function (event) {
-			//alert the index of the polygon
-			map.setZoom(5);
-			map.fitBounds(this.my_getBounds());
-			this.label.set('fontSize', 20);
-
+	for (sub in results) {
+		if (suburbs[sub]) {
 			var pieData = [{
-				value: result['Ang Mo Kio'].like,
-				color: "#F7464A",
-				highlight: "#FF5A5E",
-				label: "Like"
+				value: results[sub].Positive,
+				color: "#B2DC57",
+				highlight: "#C4F160",
+				label: "Positive"
 			}, {
-				value: result['Ang Mo Kio'].neutral,
-				color: "#46BFBD",
-				highlight: "#5AD3D1",
+				value: results[sub].Neutral,
+				color: "#70BBF5",
+				highlight: "#8EDBFB",
 				label: "Neutral"
 			}, {
-				value: result['Ang Mo Kio'].dislike,
-				color: "#FDB45C",
-				highlight: "#FFC870",
-				label: "Dislike"
+				value: results[sub].Negative,
+				color: "#D33F26",
+				highlight: "#F34A2D",
+				label: "Negative"
 			}];
 
-			var ctx = document.getElementById("chart-area").getContext("2d");
-			var myPie = new Chart(ctx).Pie(pieData, {
-				responsive: true
+			var barChartData = {
+				labels : ["Positive","Neutral","Negative"],
+				datasets : [
+					{
+						label: sub,
+						fillColor : getMajor(results[sub]),
+						strokeColor : "black",
+						highlightFill: "rgba(220,220,220,0.75)",
+						highlightStroke: "rgba(220,220,220,1)",
+						data : [results[sub].Positive, results[sub].Neutral, results[sub].Negative]
+					},
+					{
+						label: "Singapore",
+						fillColor : "#0066CC",
+						strokeColor : "black",
+						highlightFill : "rgba(151,187,205,0.75)",
+						highlightStroke : "rgba(151,187,205,1)",
+						data : [singapore.Positive, singapore.Neutral, singapore.Negative]
+					}
+				]
+
+			};
+
+			var frequencyArea = {
+				labels : ["Total Frequency"],
+				datasets : [
+					{
+						label: sub,
+						fillColor : getMajor(results[sub]),
+						strokeColor : "black",
+						highlightFill: "rgba(220,220,220,0.75)",
+						highlightStroke: "rgba(220,220,220,1)",
+						data : [results[sub].Total]
+					},
+					{
+						label: "Singapore",
+						fillColor : "#0066CC",
+						strokeColor : "black",
+						highlightFill : "rgba(151,187,205,0.75)",
+						highlightStroke : "rgba(151,187,205,1)",
+						data : [singapore.Total]
+					}
+				]
+			};
+
+			var p = new google.maps.Polygon({
+				paths: suburbs[sub],
+				strokeColor: 'black',
+				strokeOpacity: 1,
+				strokeWeight: 2,
+				fillColor: getMajor(results[sub]),
+				fillOpacity: 0.6,
+				indexID: sub,
+				pieData: pieData,
+				barData: barChartData,
+				totalData: frequencyArea
 			});
 
-			$('#region').html('in ' + this.indexID);
+			p.setMap(map);
 
-			document.getElementById('js-legend').innerHTML = myPie.generateLegend();
-		});
+			var mapLabel = new MapLabel({
+				text: p.indexID,
+				position: p.my_getBounds().getCenter(),
+				map: map,
+				fontSize: 10,
+				align: 'center'
+			});
+			p.label = mapLabel;
+			p.color = p.fillColor
 
-		google.maps.event.addListener(p, 'mouseover',function(event){
-			this.setOptions({fillColor: "#00FF00"});
-		});
+			mapLabel.set('position', p.my_getBounds().getCenter());
 
-		google.maps.event.addListener(p, 'mouseout',function(event){
-			this.setOptions({fillColor: this.color});
-		});
+			google.maps.event.addListener(p, 'click', function (event) {
+				//alert the index of the polygon
+				map.setZoom(5);
+				map.fitBounds(this.my_getBounds());
+				this.label.set('fontSize', 20);
 
+				// Create pie chart
+				var ctx = document.getElementById("chart-area").getContext("2d");
+				var myPie = new Chart(ctx).Pie(this.pieData, {
+					responsive: true
+				});
+
+				$('#region').html('in ' + this.indexID);
+
+				$('#js-legend').html(myPie.generateLegend());
+
+				// Create elements bar chart
+				var ctx2 = document.getElementById("bar-area").getContext("2d");
+				var myBar = new Chart(ctx2).Bar(this.barData, {
+					tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %>kb",
+					responsive: true
+				});
+
+				// Create total bar chart
+				var ctx3 = document.getElementById("frequency-area").getContext("2d");
+				var myBar = new Chart(ctx3).Bar(this.totalData, {
+					tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %>kb",
+					responsive: true
+				});
+
+				$('#bar-legend').html(myBar.generateLegend());
+				//alert(myBar.generateLabels())
+
+			});
+
+			google.maps.event.addListener(p, 'mouseover', function (event) {
+				this.setOptions({fillColor: "#00FF00"});
+			});
+
+			google.maps.event.addListener(p, 'mouseout', function (event) {
+				this.setOptions({fillColor: this.color});
+			});
+		}
 	}
 
-    var reset_button = GMapButton.resetButton(map, {
-        position: "TOP_RIGHT"
-    });
+	var zoom_out = GMapButton.create(map, {
+		html: "Zoom Out",
+		onclick: function () {
+			drawSGChart();
+			map.setCenter(new google.maps.LatLng(1.3667,103.83));
+			map.setZoom(12);
 
+			var barCanvas = document.getElementById("bar-area");
+			var ctx = barCanvas.getContext("2d");
+			ctx.clearRect(0, 0, barCanvas.width, barCanvas.height);
+			var totalCanvas = document.getElementById("frequency-area");
+			var ctx2 = totalCanvas.getContext("2d");
+			ctx2.clearRect(0, 0, totalCanvas.width, totalCanvas.height);
+			$("#bar-legend").html("");
+		}
+
+
+	});
+
+
+	map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(
+		document.getElementById('map-legend'));
+
+	$("#loading").fadeOut();
+	$("#container").fadeIn("slow");
+	drawSGChart();
+};
+
+
+
+function parseSG(json) {
+	var sum = 0;
+	for (i = 0; i < json.rows.length; i++) {
+		singapore[json.rows[i].key[1]] = json.rows[i].value;
+		sum += json.rows[i].value;
+	}
+	singapore.Total = sum;
+};
+
+function parseRegion(json) {
+
+	for (i = 0; i < json.rows.length; i++) {
+		results[json.rows[i].key[2]] = {Negative: 0, Neutral:0, Positive:0, Total: 0};
+	};
+
+	for (i = 0; i < json.rows.length; i++) {
+		results[json.rows[i].key[2]][json.rows[i].key[1]] = json.rows[i].value;
+		results[json.rows[i].key[2]].Total += json.rows[i].value;
+	};
+
+
+};
+
+function getMajor(a) {
+	var max =  a['Negative'];
+
+	for (pro in a) {
+		if (pro != "Total" & a[pro] > max)
+		{
+			max = a[pro];
+		};
+	};
+
+	if (max == a['Negative']) {
+		return "#D33F26";
+	};
+
+	if (max == a['Positive']) {
+		return "#B2DC57";
+	};
+
+	if (max == a['Neutral']) {
+		return "#70BBF5";
+	};
+};
+
+function drawSGChart() {
+	var data = [{
+		value: singapore.Positive,
+		color: "#B2DC57",
+		highlight: "#C4F160",
+		label: "Positive"
+	}, {
+		value: singapore.Neutral,
+		color: "#70BBF5",
+		highlight: "#8EDBFB",
+		label: "Neutral"
+	}, {
+		value: singapore.Negative,
+		color: "#D33F26",
+		highlight: "#F34A2D",
+		label: "Negative"
+	}];
+
+	// Create pie chart
+	var ctx4 = document.getElementById("chart-area").getContext("2d");
+	var pie = new Chart(ctx4).Pie(data, {
+		responsive: true
+	});
+
+	console.log(singapore);
+	$('#region').html('in Singapore');
+
+	$('#js-legend').html(pie.generateLegend());
+};
+
+$( document ).ready(function() {
+
+	var keyword = $("#key").text();
+
+	$("#container").hide();
 	$.ajax({
-		url: 'http://115.146.95.184:5984/cloud_computing/_design/application/_view/mainview?startkey=[%22food%22]&endkey=[%22food%22,{}]&group_level=3',
+		url: 'http://115.146.95.184:5984/cloud_computing/_design/application/_view/mainview?startkey=[%22' + keyword +
+		'%22]&endkey=[%22' + keyword + '%22,{}]&group_level=2',
 		type: "GET",
 		success: function(data) {
-			console.log(data);
+			parseSG(JSON.parse(data));
+		},
+		error: function(xhr, error){
+			console.log("JSON Failed");
 		}
 	});
+
+	$.ajax({
+		url: 'http://115.146.95.184:5984/cloud_computing/_design/application/_view/mainview?startkey=[%22' + keyword +
+		'%22]&endkey=[%22' + keyword + '%22,{}]&group_level=3',
+		type: "GET",
+		success: function(data) {
+			parseRegion(JSON.parse(data));
+			setTimeout(loadMap, 2000);
+		},
+		error: function(xhr, error){
+			console.log("JSON Failed");
+		}
+	});
+
+
 });
