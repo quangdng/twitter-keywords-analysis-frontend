@@ -1,0 +1,76 @@
+body, html {
+    font-family: 'Open Sans', sans-serif;
+    height: 100%;
+    width: 100%;
+}
+
+#container {
+    width: 100%;
+    height: 700px;
+}
+#map-canvas {
+    width: 80%;
+    height: 100%;
+    float: left;;
+}
+#result {
+    width: 19%;
+    height: 100%;
+    float:right;
+    text-align: center;
+    border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    border: 1px solid #d9d0d9;
+}
+.chart-legend li span{
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 5px;
+}
+
+.chart-legend {
+    margin-left: -20px;
+}
+
+.chart-legend li {
+    display: inline;
+    margin-right: 10px;
+}
+#canvas-holder {
+    width: 100%;
+}
+#chart-area {
+    width: 100%;
+    height: auto;
+}
+
+#region_title {
+    margin: 3px;
+}
+
+#region {
+    margin: 5px;
+}
+
+#keyword::-webkit-input-placeholder {
+    font-family: 'Dancing Script', cursive;
+}
+
+#keyword:-ms-input-placeholder {
+    font-family: 'Dancing Script', cursive;
+}
+
+#keyword:-moz-placeholder {
+    font-family: 'Dancing Script', cursive;
+}
+
+#keyword::-moz-placeholder {
+    font-family: 'Dancing Script', cursive;
+}
+
+#keyword {
+    margin-top: 0;
+    font-family: 'Dancing Script', cursive;
+}

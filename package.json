@@ -9,8 +9,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.12.4",
     "express": "^4.12.3",
     "express-handlebars": "^2.0.1",
-    "nchart": "^1.0.1"
+    "nchart": "^1.0.1",
+    "superagent": "^1.2.0"
+  },
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "mocha": "^2.2.4"
   }
 }
