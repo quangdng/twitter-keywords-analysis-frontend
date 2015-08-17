@@ -1,3 +1,5 @@
+/*'Group 21 - COMP90024 Cluster and Cloud Computing'*/
+
 var ang_mo_kio = [
     (1.394370, 103.818800),
     (1.390630, 103.818180),

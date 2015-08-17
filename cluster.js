@@ -1,6 +1,8 @@
-/**
- * Created by Quang Nguyen on 20/05/2015.
- */
+/*'Group 21 - COMP90024 Cluster and Cloud Computing'*/
+
+/*
+* This file is responsible for handling multi-threads of web.js
+*/
 
 var cluster = require('cluster');
 function startWorker() {

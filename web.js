@@ -1,6 +1,4 @@
-/**
- * Created by Quang Nguyen on 1/05/2015.
- */
+/*'Group 21 - COMP90024 Cluster and Cloud Computing'*/
 
 // Core Elements of Server
 var express = require('express');

@@ -1,3 +1,6 @@
+/*'Group 21 - COMP90024 Cluster and Cloud Computing'*/
+
+// GeoJSON required to highligh suburbs
 google.maps.Polygon.prototype.my_getBounds=function(){
 	var bounds = new google.maps.LatLngBounds()
 	this.getPath().forEach(function(element,index){bounds.extend(element)})
@@ -2746,6 +2749,7 @@ var yishun = [
 	new google.maps.LatLng(1.414320, 103.805670),
 ];
 
+// Suburbs names associated with relevant GeoJSON
 var suburbs = {
 	'Ang Mo Kio':ang_mo_kio,
 	'Bedok':bedok,
@@ -2867,9 +2871,11 @@ var result = {
 	'Yishun':yishun
 };
 
+// Objects that handle requested output from server
 var results = {};
 var singapore = {};
 
+// Load map, draw polygons and charts based on requested ouput
 function loadMap() {
 	var mapOptions = {
 		center: new google.maps.LatLng(1.3667,103.83),
@@ -3060,9 +3066,8 @@ function loadMap() {
 	drawSGChart();
 };
 
-
-
-function parseSG(json) {
+// Parse country output JSON
+function  parseSG(json) {
 	var sum = 0;
 	for (i = 0; i < json.rows.length; i++) {
 		singapore[json.rows[i].key[1]] = json.rows[i].value;
@@ -3071,6 +3076,7 @@ function parseSG(json) {
 	singapore.Total = sum;
 };
 
+// Parse suburbs output JSON
 function parseRegion(json) {
 
 	for (i = 0; i < json.rows.length; i++) {
@@ -3085,6 +3091,7 @@ function parseRegion(json) {
 
 };
 
+// Calculate sentiment bias of each suburb
 function getMajor(a) {
 	var max =  a['Negative'];
 
@@ -3108,6 +3115,8 @@ function getMajor(a) {
 	};
 };
 
+
+// Draw chart for whole Singapore figure
 function drawSGChart() {
 	var data = [{
 		value: singapore.Positive,
@@ -3138,6 +3147,7 @@ function drawSGChart() {
 	$('#js-legend').html(pie.generateLegend());
 };
 
+// Main flow of the page
 $( document ).ready(function() {
 
 	var keyword = $("#key").text();
